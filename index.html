@@ -3,1143 +3,466 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AAA Pro Home Inspectors — Baseline Performance Dashboard</title>
+<title>AAA Pro Home Inspectors — MMai Performance Dashboard</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #1a1a2e; }
 
-  :root {
-    --brand:       #1a2e4a;
-    --accent:      #e8a020;
-    --accent-lt:   #fef3e2;
-    --green:       #16a34a;
-    --green-lt:    #dcfce7;
-    --red:         #dc2626;
-    --red-lt:      #fee2e2;
-    --gray-lt:     #f8fafc;
-    --gray-mid:    #e2e8f0;
-    --gray-txt:    #64748b;
-    --body-txt:    #1e293b;
-    --white:       #ffffff;
-    --radius:      12px;
-    --shadow:      0 2px 16px rgba(0,0,0,.07);
-    --shadow-lg:   0 4px 32px rgba(0,0,0,.10);
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #f1f5f9;
-    color: var(--body-txt);
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  /* ── HEADER ─────────────────────────────────────── */
   .header {
-    background: var(--brand);
-    color: var(--white);
-    padding: 40px 48px 36px;
+    background: linear-gradient(135deg, #0a2342 0%, #1a3a5c 60%, #1e5a8e 100%);
+    color: #fff; padding: 48px 40px 36px; width: 100%;
   }
-  .header-inner {
-    max-width: 1440px;
-    margin: 0 auto;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .header-left h1 {
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: -.3px;
-    margin-bottom: 6px;
-  }
-  .header-left p {
-    font-size: 14px;
-    color: rgba(255,255,255,.7);
-  }
-  .header-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-  }
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 14px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: .3px;
-    text-transform: uppercase;
-  }
-  .badge-accent   { background: var(--accent); color: var(--brand); }
-  .badge-outline  { border: 1.5px solid rgba(255,255,255,.4); color: rgba(255,255,255,.9); }
-  .badge-baseline { background: #7c3aed; color: var(--white); }
-  .badge-conf     { background: rgba(255,255,255,.12); color: rgba(255,255,255,.8); }
+  .header-inner { max-width: 1440px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
+  .header-left h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .header-left p { font-size: 1rem; opacity: 0.8; margin-top: 4px; }
+  .header-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .badge { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+  .badge-biweekly { background: #1e90ff; color: #fff; }
+  .badge-baseline { background: #f59e0b; color: #1a1a2e; }
+  .badge-confidential { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+  .header-meta { text-align: right; }
+  .header-meta .report-num { font-size: 0.85rem; opacity: 0.65; margin-bottom: 4px; }
+  .header-meta .report-period { font-size: 1rem; font-weight: 600; }
 
-  /* ── CADENCE BAR ─────────────────────────────────── */
-  .cadence-bar {
-    background: var(--accent);
-    padding: 28px 48px;
-  }
-  .cadence-inner {
-    max-width: 1440px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 24px;
-  }
-  .cadence-block { }
-  .cadence-block .cb-label {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: rgba(26,46,74,.65);
-    margin-bottom: 4px;
-  }
-  .cadence-block .cb-value {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--brand);
-    line-height: 1.3;
-  }
+  .cadence-bar { background: #0d1b2a; color: #fff; width: 100%; padding: 28px 40px; }
+  .cadence-inner { max-width: 1440px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 0; }
+  .cadence-block { flex: 1 1 200px; padding: 12px 28px 12px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 28px; }
+  .cadence-block:last-child { border-right: none; margin-right: 0; }
+  .cadence-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #7eb3d8; font-weight: 700; margin-bottom: 6px; }
+  .cadence-value { font-size: 1rem; font-weight: 600; color: #fff; line-height: 1.4; }
 
-  /* ── MAIN CONTAINER ──────────────────────────────── */
-  .main {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 48px 48px 80px;
-  }
+  .main { max-width: 1440px; margin: 0 auto; padding: 48px 40px; }
+  .section { margin-bottom: 60px; }
+  .section-title { font-size: 1.25rem; font-weight: 800; color: #0a2342; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 14px; margin-bottom: 28px; border-bottom: 2px solid #1e90ff; }
 
-  /* ── SECTION SHELL ───────────────────────────────── */
-  .section {
-    margin-bottom: 56px;
-  }
-  .section-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--brand);
-    margin-bottom: 6px;
-    padding-bottom: 14px;
-    border-bottom: 2px solid var(--gray-mid);
-    letter-spacing: -.2px;
-  }
-  .section-sub {
-    font-size: 13px;
-    color: var(--gray-txt);
-    margin-bottom: 24px;
-  }
+  .ai-insights-box { background: linear-gradient(135deg, #0a2342 0%, #1a3a5c 100%); border-radius: 16px; padding: 36px 40px; color: #fff; margin-bottom: 28px; }
+  .ai-insights-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; color: #7eb3d8; text-transform: uppercase; letter-spacing: 0.5px; }
+  .ai-insights-box p { font-size: 1rem; line-height: 1.75; opacity: 0.92; }
+  .ai-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .ai-card { background: #fff; border-radius: 12px; padding: 24px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 4px solid #1e90ff; }
+  .ai-card h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #1e90ff; font-weight: 700; margin-bottom: 10px; }
+  .ai-card p { font-size: 0.92rem; line-height: 1.6; color: #333; }
 
-  /* ── CARD ────────────────────────────────────────── */
-  .card {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 28px 32px;
-  }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .kpi-card { background: #fff; border-radius: 14px; padding: 28px 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border-top: 4px solid #1e90ff; display: flex; flex-direction: column; gap: 8px; }
+  .kpi-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px; color: #888; font-weight: 700; }
+  .kpi-value { font-size: 2.2rem; font-weight: 800; color: #0a2342; line-height: 1; }
+  .kpi-sub { font-size: 0.85rem; color: #555; line-height: 1.4; }
+  .kpi-source { font-size: 0.75rem; color: #1e90ff; font-weight: 600; }
+  .kpi-delta { font-size: 0.8rem; color: #f59e0b; font-weight: 700; margin-top: 4px; }
 
-  /* ── AI INSIGHTS ─────────────────────────────────── */
-  .insights-wrapper {
-    background: linear-gradient(135deg, var(--brand) 0%, #2d4a6e 100%);
-    border-radius: var(--radius);
-    padding: 36px 40px;
-    box-shadow: var(--shadow-lg);
-    color: var(--white);
-  }
-  .insights-wrapper h3 {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 14px;
-  }
-  .insights-wrapper .summary-para {
-    font-size: 16px;
-    line-height: 1.75;
-    color: rgba(255,255,255,.92);
-    margin-bottom: 32px;
-    max-width: 860px;
-  }
-  .insight-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
-  }
-  .insight-card {
-    background: rgba(255,255,255,.09);
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 10px;
-    padding: 20px 22px;
-  }
-  .insight-card .ic-icon { font-size: 22px; margin-bottom: 8px; }
-  .insight-card .ic-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 6px;
-  }
-  .insight-card .ic-body {
-    font-size: 13px;
-    color: rgba(255,255,255,.80);
-    line-height: 1.55;
-  }
+  .funnel-wrapper { display: flex; gap: 16px; flex-wrap: wrap; }
+  .funnel-step { flex: 1 1 160px; background: #fff; border-radius: 12px; padding: 28px 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); text-align: center; position: relative; }
+  .funnel-step + .funnel-step::before { content: '→'; position: absolute; left: -14px; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: #1e90ff; font-weight: 700; }
+  .funnel-step-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: #888; font-weight: 700; margin-bottom: 10px; }
+  .funnel-step-value { font-size: 1.9rem; font-weight: 800; color: #0a2342; margin-bottom: 6px; }
+  .funnel-step-sub { font-size: 0.8rem; color: #555; margin-bottom: 8px; line-height: 1.4; }
+  .funnel-step-delta { font-size: 0.75rem; color: #f59e0b; font-weight: 700; }
 
-  /* ── KPI CARDS ───────────────────────────────────── */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  .kpi-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 24px 26px;
-    border-top: 4px solid var(--brand);
-  }
-  .kpi-card.accent-top { border-top-color: var(--accent); }
-  .kpi-card .kpi-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .9px;
-    text-transform: uppercase;
-    color: var(--gray-txt);
-    margin-bottom: 10px;
-  }
-  .kpi-card .kpi-value {
-    font-size: 34px;
-    font-weight: 900;
-    color: var(--brand);
-    line-height: 1;
-    margin-bottom: 8px;
-    letter-spacing: -1px;
-  }
-  .kpi-card .kpi-sub {
-    font-size: 12.5px;
-    color: var(--gray-txt);
-    margin-bottom: 6px;
-    line-height: 1.4;
-  }
-  .kpi-card .kpi-source {
-    font-size: 11px;
-    color: #94a3b8;
-    font-style: italic;
-    margin-bottom: 8px;
-  }
-  .kpi-card .kpi-delta {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 999px;
-    background: #f1f5f9;
-    color: var(--gray-txt);
-  }
+  .card { background: #fff; border-radius: 14px; padding: 28px 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin-bottom: 24px; }
+  .card h3 { font-size: 1rem; font-weight: 700; color: #0a2342; margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { text-align: left; padding: 10px 14px; background: #f0f4f8; color: #0a2342; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 12px 14px; border-bottom: 1px solid #f0f4f8; color: #333; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tfoot td { background: #f0f4f8; font-weight: 700; color: #0a2342; }
+  .status-baseline { color: #f59e0b; font-weight: 600; }
 
-  /* ── FUNNEL ──────────────────────────────────────── */
-  .funnel {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-  .funnel-step {
-    flex: 1;
-    min-width: 140px;
-    background: var(--white);
-    border: 1px solid var(--gray-mid);
-    border-radius: 0;
-    padding: 26px 20px 22px;
-    position: relative;
-    text-align: center;
-  }
-  .funnel-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
-  .funnel-step:last-child  { border-radius: 0 var(--radius) var(--radius) 0; }
-  .funnel-step + .funnel-step { border-left: none; }
-  .funnel-step::after {
-    content: '›';
-    position: absolute;
-    right: -14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 24px;
-    color: var(--gray-mid);
-    z-index: 2;
-    font-weight: 300;
-  }
-  .funnel-step:last-child::after { display: none; }
-  .funnel-step .fs-stage {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--gray-txt);
-    margin-bottom: 10px;
-  }
-  .funnel-step .fs-value {
-    font-size: 30px;
-    font-weight: 900;
-    color: var(--brand);
-    letter-spacing: -1px;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .funnel-step .fs-label {
-    font-size: 12px;
-    color: var(--gray-txt);
-    margin-bottom: 8px;
-    line-height: 1.3;
-  }
-  .funnel-step .fs-delta {
-    font-size: 11px;
-    font-weight: 600;
-    color: #94a3b8;
-  }
+  .insight-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .insight-list li { background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-left: 4px solid #1e90ff; font-size: 0.93rem; line-height: 1.6; color: #222; }
+  .insight-list li strong { color: #0a2342; }
 
-  /* ── PERFORMANCE TABLE ───────────────────────────── */
-  .perf-table { width: 100%; border-collapse: collapse; }
-  .perf-table th {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .8px;
-    text-transform: uppercase;
-    color: var(--gray-txt);
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 2px solid var(--gray-mid);
-    background: var(--gray-lt);
-  }
-  .perf-table td {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--gray-mid);
-    font-size: 13.5px;
-    vertical-align: middle;
-  }
-  .perf-table tr:last-child td { border-bottom: none; }
-  .perf-table .td-name { font-weight: 700; color: var(--brand); }
-  .pill {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-  }
-  .pill-green  { background: var(--green-lt); color: var(--green); }
-  .pill-red    { background: var(--red-lt);   color: var(--red); }
-  .pill-gray   { background: #f1f5f9;         color: var(--gray-txt); }
-  .pill-accent { background: var(--accent-lt); color: #92400e; }
+  .opt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .opt-card { background: #fff; border-radius: 14px; padding: 26px 28px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); border-top: 4px solid #0a2342; }
+  .opt-num { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #1e90ff; font-weight: 700; margin-bottom: 10px; }
+  .opt-card h4 { font-size: 0.95rem; font-weight: 700; color: #0a2342; margin-bottom: 12px; }
+  .opt-row { font-size: 0.85rem; color: #444; line-height: 1.55; margin-bottom: 6px; }
+  .opt-row span { font-weight: 700; color: #0a2342; }
 
-  /* ── OBSERVATIONS ────────────────────────────────── */
-  .obs-list { display: flex; flex-direction: column; gap: 16px; }
-  .obs-item {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 20px 24px;
-  }
-  .obs-icon { font-size: 22px; flex-shrink: 0; }
-  .obs-content .obs-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--brand);
-    margin-bottom: 4px;
-  }
-  .obs-content .obs-body {
-    font-size: 13.5px;
-    color: var(--gray-txt);
-    line-height: 1.55;
-  }
+  .intent-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .intent-card { background: #fff; border-radius: 12px; padding: 24px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 4px solid #f59e0b; }
+  .intent-card h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #f59e0b; font-weight: 700; margin-bottom: 10px; }
+  .intent-card p { font-size: 0.9rem; line-height: 1.6; color: #333; }
 
-  /* ── HIGH INTENT ─────────────────────────────────── */
-  .hi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 18px;
-  }
-  .hi-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 22px 24px;
-    border-left: 4px solid var(--accent);
-  }
-  .hi-card .hi-name { font-size: 14px; font-weight: 700; color: var(--brand); margin-bottom: 2px; }
-  .hi-card .hi-company { font-size: 12px; color: var(--gray-txt); margin-bottom: 10px; }
-  .hi-card .hi-signals { display: flex; flex-wrap: wrap; gap: 6px; }
-  .hi-card .hi-signal {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: var(--accent-lt);
-    color: #92400e;
-  }
+  .change-box { background: #fff; border-radius: 14px; padding: 32px 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .change-box p { font-size: 0.95rem; line-height: 1.75; color: #333; }
 
-  /* ── OPTIMIZATION ────────────────────────────────── */
-  .opt-list { display: flex; flex-direction: column; gap: 18px; }
-  .opt-item {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 22px 28px;
-    display: grid;
-    grid-template-columns: 36px 1fr;
-    gap: 16px;
-    align-items: flex-start;
-  }
-  .opt-num {
-    width: 36px; height: 36px;
-    background: var(--brand);
-    color: var(--white);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 800;
-    flex-shrink: 0;
-  }
-  .opt-content .opt-trigger {
-    font-size: 11px; font-weight: 700;
-    letter-spacing: .8px; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 4px;
-  }
-  .opt-content .opt-action {
-    font-size: 14px; font-weight: 700;
-    color: var(--brand); margin-bottom: 6px;
-  }
-  .opt-content .opt-outcome {
-    font-size: 13px; color: var(--gray-txt); line-height: 1.5;
-  }
-  .opt-content .opt-outcome strong { color: var(--green); }
+  .footer { text-align: center; padding: 32px 20px; font-size: 0.8rem; color: #aaa; border-top: 1px solid #e5e7eb; margin-top: 20px; }
 
-  /* ── CHANGE SUMMARY ──────────────────────────────── */
-  .change-box {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border: 1px solid var(--gray-mid);
-    border-radius: var(--radius);
-    padding: 32px 36px;
-    text-align: center;
-  }
-  .change-box .cb-headline {
-    font-size: 18px; font-weight: 800; color: var(--brand); margin-bottom: 12px;
-  }
-  .change-box .cb-body {
-    font-size: 14px; color: var(--gray-txt); line-height: 1.7; max-width: 680px; margin: 0 auto 24px;
-  }
-  .change-box .cb-stats {
-    display: flex; justify-content: center; flex-wrap: wrap; gap: 24px;
-  }
-  .change-box .cs-item {
-    text-align: center;
-  }
-  .change-box .cs-val {
-    font-size: 28px; font-weight: 900; color: var(--brand); letter-spacing: -1px;
-  }
-  .change-box .cs-lbl {
-    font-size: 12px; color: var(--gray-txt); margin-top: 2px;
-  }
-
-  /* ── FOOTER ──────────────────────────────────────── */
-  .footer {
-    background: var(--brand);
-    color: rgba(255,255,255,.5);
-    text-align: center;
-    padding: 24px 48px;
-    font-size: 12px;
-  }
-  .footer strong { color: rgba(255,255,255,.8); }
-
-  /* ── RESPONSIVE ──────────────────────────────────── */
-  @media (max-width: 900px) {
-    .header { padding: 28px 24px; }
-    .cadence-bar { padding: 22px 24px; }
-    .main { padding: 32px 20px 60px; }
-    .cadence-inner { grid-template-columns: 1fr 1fr; }
-    .funnel { flex-direction: column; }
-    .funnel-step { border-radius: var(--radius) !important; border: 1px solid var(--gray-mid); }
-    .funnel-step::after { display: none; }
-    .insight-cards { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .header-inner { flex-direction: column; }
-    .cadence-inner { grid-template-columns: 1fr; }
-    .kpi-grid { grid-template-columns: 1fr 1fr; }
-    .hi-grid { grid-template-columns: 1fr; }
-    .main { padding: 24px 16px 48px; }
+    .header-meta { text-align: left; }
+    .cadence-inner { flex-direction: column; gap: 16px; }
+    .cadence-block { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px; margin-right: 0; }
+    .cadence-block:last-child { border-bottom: none; }
+    .main { padding: 32px 20px; }
+    .funnel-wrapper { flex-direction: column; }
+    .funnel-step + .funnel-step::before { display: none; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 8px 10px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════
-     HEADER
-════════════════════════════════════════════════════ -->
+<!-- HEADER -->
 <div class="header">
   <div class="header-inner">
     <div class="header-left">
       <h1>AAA Pro Home Inspectors</h1>
-      <p>Performance Dashboard &nbsp;·&nbsp; Report #1 &nbsp;·&nbsp; Sep 22, 2025 – Apr 20, 2026</p>
+      <p>MercenaryMarketing.ai — Performance Dashboard</p>
+      <div class="header-badges">
+        <span class="badge badge-biweekly">Biweekly Report</span>
+        <span class="badge badge-baseline">Baseline Period</span>
+        <span class="badge badge-confidential">Confidential</span>
+      </div>
     </div>
-    <div class="header-badges">
-      <span class="badge badge-baseline">📊 Baseline Period</span>
-      <span class="badge badge-accent">Biweekly Report</span>
-      <span class="badge badge-conf">🔒 Confidential</span>
-      <span class="badge badge-outline">Powered by MMai</span>
+    <div class="header-meta">
+      <div class="report-num">Report #001</div>
+      <div class="report-period">Through April 22, 2026</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
-     CADENCE BAR
-════════════════════════════════════════════════════ -->
+<!-- CADENCE BAR -->
 <div class="cadence-bar">
   <div class="cadence-inner">
     <div class="cadence-block">
-      <div class="cb-label">Report Cadence</div>
-      <div class="cb-value">Biweekly (Every 2 Weeks)</div>
+      <div class="cadence-label">Report Cadence</div>
+      <div class="cadence-value">Biweekly — Every 2 Weeks</div>
     </div>
     <div class="cadence-block">
-      <div class="cb-label">Reporting Period</div>
-      <div class="cb-value">Sep 22, 2025 – Apr 20, 2026</div>
+      <div class="cadence-label">Next Update</div>
+      <div class="cadence-value">May 6, 2026</div>
     </div>
     <div class="cadence-block">
-      <div class="cb-label">Next Update</div>
-      <div class="cb-value">~May 4, 2026</div>
+      <div class="cadence-label">Data Sources</div>
+      <div class="cadence-value">MMai (Email / SMS / Sequences / Lists)</div>
     </div>
     <div class="cadence-block">
-      <div class="cb-label">Data Sources</div>
-      <div class="cb-value">MMai (Email · SMS · Sequences · Lists)</div>
-    </div>
-    <div class="cadence-block">
-      <div class="cb-label">LinkedIn (Prosp)</div>
-      <div class="cb-value">Not yet active — launching next cycle</div>
-    </div>
-    <div class="cadence-block">
-      <div class="cb-label">Comparisons</div>
-      <div class="cb-value">Period-over-period begins next report</div>
+      <div class="cadence-label">Comparison Note</div>
+      <div class="cadence-value">Period-over-period comparisons begin next report</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
-     MAIN
-════════════════════════════════════════════════════ -->
+<!-- MAIN -->
 <div class="main">
 
-  <!-- ── AI INSIGHTS ── -->
+  <!-- AI INSIGHTS -->
   <div class="section">
-    <div class="section-title">🤖 AI Insights</div>
-    <div class="section-sub">Pattern analysis across all MMai data — baseline period</div>
-
-    <div class="insights-wrapper">
-      <h3>Merc AI · Performance Summary</h3>
-      <p class="summary-para">
-        AAA Pro Home Inspectors has built a meaningful outreach foundation over this baseline period. With 3,269 emails and 37 SMS messages sent across 6 sequences, the program is generating consistent top-of-funnel activity targeting real estate agents and insurance professionals throughout the Louisville, KY market. The strongest signal in the data is a 17.47% open rate — well above the 20–25% industry average range for cold outreach — demonstrating that subject lines and sender reputation are working. Click engagement at 3.03% is healthy for a first-touch cadence, and the 11 direct replies represent early proof of concept for the messaging approach. The primary opportunity is converting that open and click interest into conversations and meetings, which the upcoming Prosp (LinkedIn) channel launch will directly address.
-      </p>
-      <div class="insight-cards">
-        <div class="insight-card">
-          <div class="ic-icon">📬</div>
-          <div class="ic-title">Email is the Core Engine</div>
-          <div class="ic-body">All 3,269 outreach touches are email-driven. The Real Estate Agent Referral sequence (Apollo) is the most active with 87 members and 144 step executions today alone.</div>
-        </div>
-        <div class="insight-card">
-          <div class="ic-icon">👁️</div>
-          <div class="ic-title">Open Rate is a Strength</div>
-          <div class="ic-body">17.47% open rate across all sequences indicates strong deliverability and subject line performance. This is a solid baseline to build from.</div>
-        </div>
-        <div class="insight-card">
-          <div class="ic-icon">🖱️</div>
-          <div class="ic-title">Clicks Show Real Interest</div>
-          <div class="ic-body">99 unique clicks (3.03%) to www.phi-louisville.com signal genuine prospect curiosity. Several contacts clicked multiple times — a high-intent behavior pattern.</div>
-        </div>
-        <div class="insight-card">
-          <div class="ic-icon">💬</div>
-          <div class="ic-title">Replies Are Emerging</div>
-          <div class="ic-body">11 unique replies (0.34%) across all sequences. Low but expected for a new program. The focus now shifts to increasing reply rate through stronger CTAs and LinkedIn layering.</div>
-        </div>
-        <div class="insight-card">
-          <div class="ic-icon">🎯</div>
-          <div class="ic-title">Audience Builder Active</div>
-          <div class="ic-body">6,581-contact Home Inspection Buyers Intent audience is built and ready. 915 contacts in the earlier batch. Total addressable pipeline exceeds 9,000 contacts.</div>
-        </div>
-        <div class="insight-card">
-          <div class="ic-icon">🔗</div>
-          <div class="ic-title">LinkedIn Not Yet Active</div>
-          <div class="ic-body">Prosp campaign has not launched. Adding LinkedIn as a second touchpoint will create multi-channel presence and is expected to meaningfully lift reply and conversion rates.</div>
-        </div>
+    <div class="section-title">AI Insights</div>
+    <div class="ai-insights-box">
+      <h3>Overall Performance Summary</h3>
+      <p>This is the baseline report for AAA Pro Home Inspectors. Three active email and SMS sequences are live across 851 total contacts, with 626 steps executed to date. All three sequences are running on auto-send and in active delivery. The primary outreach channel is email targeting real estate agents in the Louisville, KY market, with a secondary SMS-enabled buyer-facing sequence. No replies or bookings have been recorded yet — consistent with early-stage sequence activity where pipeline warm-up precedes conversion. The data captured here establishes the performance baseline for all future period-over-period comparisons.</p>
+    </div>
+    <div class="ai-cards">
+      <div class="ai-card">
+        <h4>Strongest Channel</h4>
+        <p>Email outreach via the Real Estate Agent Referral Sequence is the most active pipeline — 99 contacts, 222 executed steps across a 3-step sequence running 7 days/week.</p>
+      </div>
+      <div class="ai-card">
+        <h4>Largest Audience</h4>
+        <p>The Home Inspection Buyers Sequence holds the largest audience at 665 contacts, though only 225 steps executed — many contacts are still early in the sequence.</p>
+      </div>
+      <div class="ai-card">
+        <h4>Engagement Signal</h4>
+        <p>No replies or bookings yet. Normal for a baseline period. Open and click tracking is enabled — engagement data will populate starting next cycle.</p>
+      </div>
+      <div class="ai-card">
+        <h4>Bounce Watch</h4>
+        <p>22 total bounces across all sequences (2.6%). The Buyers Sequence accounts for 14 of those — list hygiene review recommended before adding new contacts.</p>
       </div>
     </div>
   </div>
 
-  <!-- ── EXECUTIVE SUMMARY ── -->
+  <!-- EXECUTIVE SUMMARY -->
   <div class="section">
-    <div class="section-title">📋 Executive Summary</div>
-    <div class="section-sub">Key performance indicators — baseline period Sep 22, 2025 – Apr 20, 2026</div>
-
+    <div class="section-title">Executive Summary</div>
     <div class="kpi-grid">
-
-      <div class="kpi-card accent-top">
-        <div class="kpi-label">Intent Signals</div>
-        <div class="kpi-value">9,000+</div>
-        <div class="kpi-sub">Total contacts identified across AI-built audience lists targeting home inspection buyers, real estate agents & insurance professionals in KY</div>
-        <div class="kpi-source">Source: MMai Audience Builder / Lists</div>
-        <span class="kpi-delta">— Baseline</span>
-      </div>
-
       <div class="kpi-card">
-        <div class="kpi-label">Contacts Added to Sequences</div>
-        <div class="kpi-value">1,340</div>
-        <div class="kpi-sub">Across 6 sequences: Real Estate Agent Referral (2 variants), Home Inspection Buyers, Louisville IR Insurance (2 variants), and Industrial Prospects</div>
+        <div class="kpi-label">Total Contacts</div>
+        <div class="kpi-value">851</div>
+        <div class="kpi-sub">Across 3 active sequences</div>
         <div class="kpi-source">Source: MMai Sequences</div>
-        <span class="kpi-delta">— Baseline</span>
+        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
       </div>
-
       <div class="kpi-card">
-        <div class="kpi-label">Outreach Sent</div>
-        <div class="kpi-value">3,269</div>
-        <div class="kpi-sub">Total email executions across all sequences. Plus 37 SMS messages sent via integrated phone number (502) 776-4663</div>
+        <div class="kpi-label">Steps Executed</div>
+        <div class="kpi-value">626</div>
+        <div class="kpi-sub">Emails & SMS delivered across all sequences</div>
         <div class="kpi-source">Source: MMai Sequences</div>
-        <span class="kpi-delta">— Baseline</span>
+        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
       </div>
-
-      <div class="kpi-card accent-top">
-        <div class="kpi-label">Unique Opens</div>
-        <div class="kpi-value">571</div>
-        <div class="kpi-sub">17.47% open rate — strong deliverability and subject line performance across the full period</div>
-        <div class="kpi-source">Source: MMai Email Tracking</div>
-        <span class="kpi-delta">— Baseline</span>
-      </div>
-
       <div class="kpi-card">
-        <div class="kpi-label">Unique Clicks</div>
-        <div class="kpi-value">99</div>
-        <div class="kpi-sub">3.03% click rate. Primary CTA destination: www.phi-louisville.com. Multiple high-repeat clickers identified as high-intent signals</div>
-        <div class="kpi-source">Source: MMai Email Tracking</div>
-        <span class="kpi-delta">— Baseline</span>
+        <div class="kpi-label">Completed Members</div>
+        <div class="kpi-value">107</div>
+        <div class="kpi-sub">Contacts who finished all sequence steps</div>
+        <div class="kpi-source">Source: MMai Sequences</div>
+        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
       </div>
-
+      <div class="kpi-card">
+        <div class="kpi-label">In Progress</div>
+        <div class="kpi-value">159</div>
+        <div class="kpi-sub">Contacts actively moving through sequences</div>
+        <div class="kpi-source">Source: MMai Sequences</div>
+        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
+      </div>
       <div class="kpi-card">
         <div class="kpi-label">Replies</div>
-        <div class="kpi-value">11</div>
-        <div class="kpi-sub">0.34% reply rate. Early conversations initiated. Reply rate is the primary metric to improve in next cycle via LinkedIn layering and CTA refinement</div>
+        <div class="kpi-value">0</div>
+        <div class="kpi-sub">No replies recorded this baseline period</div>
         <div class="kpi-source">Source: MMai Sequences</div>
-        <span class="kpi-delta">— Baseline</span>
+        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
       </div>
-
       <div class="kpi-card">
-        <div class="kpi-label">Pending Approvals</div>
-        <div class="kpi-value">21</div>
-        <div class="kpi-sub">Executions queued and awaiting approval. Active sequences are firing daily — today alone saw 144 step executions in the Real Estate Agent Referral sequence</div>
-        <div class="kpi-source">Source: MMai Sequences</div>
-        <span class="kpi-delta">— Baseline</span>
-      </div>
-
-      <div class="kpi-card accent-top">
         <div class="kpi-label">Meetings Booked</div>
         <div class="kpi-value">0</div>
-        <div class="kpi-sub">No meetings booked via automated sequences. Meetings are expected to increase as LinkedIn outreach (Prosp) is layered in next cycle</div>
-        <div class="kpi-source">Source: MMai / Calendly (client-reported)</div>
-        <span class="kpi-delta">— Baseline</span>
+        <div class="kpi-sub">No bookings recorded this baseline period</div>
+        <div class="kpi-source">Source: Calendly (client-reported)</div>
+        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
       </div>
-
-    </div>
-  </div>
-
-  <!-- ── FUNNEL OVERVIEW ── -->
-  <div class="section">
-    <div class="section-title">🔽 Funnel Overview</div>
-    <div class="section-sub">Full-period performance from intent identification through conversion — baseline</div>
-
-    <div class="funnel">
-      <div class="funnel-step">
-        <div class="fs-stage">Intent</div>
-        <div class="fs-value">9,000+</div>
-        <div class="fs-label">Contacts identified via AI audience builder</div>
-        <div class="fs-delta">— Baseline</div>
-      </div>
-      <div class="funnel-step">
-        <div class="fs-stage">Outreach</div>
-        <div class="fs-value">3,269</div>
-        <div class="fs-label">Emails sent + 37 SMS across 6 sequences</div>
-        <div class="fs-delta">— Baseline</div>
-      </div>
-      <div class="funnel-step">
-        <div class="fs-stage">Engagement</div>
-        <div class="fs-value">571</div>
-        <div class="fs-label">Unique opens · 17.47% rate</div>
-        <div class="fs-delta">— Baseline</div>
-      </div>
-      <div class="funnel-step">
-        <div class="fs-stage">Clicks</div>
-        <div class="fs-value">99</div>
-        <div class="fs-label">Unique clicks to website · 3.03% rate</div>
-        <div class="fs-delta">— Baseline</div>
-      </div>
-      <div class="funnel-step">
-        <div class="fs-stage">Conversations</div>
-        <div class="fs-value">11</div>
-        <div class="fs-label">Unique replies · 0.34% rate</div>
-        <div class="fs-delta">— Baseline</div>
-      </div>
-      <div class="funnel-step">
-        <div class="fs-stage">Meetings</div>
-        <div class="fs-value">0</div>
-        <div class="fs-label">Booked via sequences · LinkedIn launching</div>
-        <div class="fs-delta">— Baseline</div>
+      <div class="kpi-card">
+        <div class="kpi-label">Bounces</div>
+        <div class="kpi-value">22</div>
+        <div class="kpi-sub">2.6% of total contacts bounced</div>
+        <div class="kpi-source">Source: MMai Sequences</div>
+        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
       </div>
     </div>
   </div>
 
-  <!-- ── PERFORMANCE BREAKDOWN ── -->
+  <!-- FUNNEL -->
   <div class="section">
-    <div class="section-title">📊 Performance Breakdown</div>
-    <div class="section-sub">Sequence-by-sequence detail and channel-level metrics</div>
+    <div class="section-title">Funnel Overview</div>
+    <div class="funnel-wrapper">
+      <div class="funnel-step">
+        <div class="funnel-step-label">Intent / Audience</div>
+        <div class="funnel-step-value">851</div>
+        <div class="funnel-step-sub">Total contacts loaded across 3 sequences</div>
+        <div class="funnel-step-delta">Δ: — (Baseline)</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-step-label">Outreach Sent</div>
+        <div class="funnel-step-value">626</div>
+        <div class="funnel-step-sub">Steps executed (email + SMS)</div>
+        <div class="funnel-step-delta">Δ: — (Baseline)</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-step-label">Engagement</div>
+        <div class="funnel-step-value">—</div>
+        <div class="funnel-step-sub">Opens & clicks tracked; data populates next cycle</div>
+        <div class="funnel-step-delta">Δ: — (Baseline)</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-step-label">Conversations</div>
+        <div class="funnel-step-value">0</div>
+        <div class="funnel-step-sub">Replies received across all sequences</div>
+        <div class="funnel-step-delta">Δ: — (Baseline)</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-step-label">Meetings</div>
+        <div class="funnel-step-value">0</div>
+        <div class="funnel-step-sub">Bookings recorded this period</div>
+        <div class="funnel-step-delta">Δ: — (Baseline)</div>
+      </div>
+    </div>
+  </div>
 
-    <div class="card" style="margin-bottom:24px;">
-      <table class="perf-table">
+  <!-- PERFORMANCE BREAKDOWN -->
+  <div class="section">
+    <div class="section-title">Performance Breakdown</div>
+    <div class="card">
+      <h3>Sequence-Level Breakdown</h3>
+      <table>
         <thead>
           <tr>
             <th>Sequence</th>
-            <th>Status</th>
-            <th>Members</th>
-            <th>In Progress</th>
-            <th>Completed</th>
-            <th>Bounced</th>
-            <th>Steps</th>
             <th>Channel</th>
+            <th>Members</th>
+            <th>Steps Executed</th>
+            <th>Completed</th>
+            <th>In Progress</th>
+            <th>Bounced</th>
+            <th>Replies</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="td-name">Real Estate Agent Referral — Apollo</td>
-            <td><span class="pill pill-green">Active</span></td>
-            <td>87</td>
-            <td>85</td>
-            <td>1</td>
-            <td>4</td>
-            <td>3</td>
-            <td>Email</td>
-          </tr>
-          <tr>
-            <td class="td-name">Real Estate Agent Referral</td>
-            <td><span class="pill pill-green">Active</span></td>
+            <td>Real Estate Agent Referral Sequence</td>
+            <td>Email (3-step)</td>
             <td>99</td>
-            <td>56</td>
+            <td>222</td>
             <td>40</td>
-            <td>3</td>
-            <td>3</td>
-            <td>Email</td>
+            <td>59</td>
+            <td>4</td>
+            <td>0</td>
+            <td><span class="status-baseline">Baseline</span></td>
           </tr>
           <tr>
-            <td class="td-name">Home Inspection Buyers Sequence</td>
-            <td><span class="pill pill-green">Active</span></td>
+            <td>Real Estate Agent Referral Sequence — Apollo</td>
+            <td>Email (3-step)</td>
+            <td>87</td>
+            <td>179</td>
+            <td>28</td>
+            <td>59</td>
+            <td>4</td>
+            <td>0</td>
+            <td><span class="status-baseline">Baseline</span></td>
+          </tr>
+          <tr>
+            <td>Home Inspection Buyers Sequence</td>
+            <td>SMS + Email (3-step)</td>
             <td>665</td>
-            <td>41</td>
+            <td>225</td>
             <td>39</td>
+            <td>41</td>
             <td>14</td>
-            <td>3</td>
-            <td>SMS + Email</td>
-          </tr>
-          <tr>
-            <td class="td-name">Louisville IR Insurance (New)</td>
-            <td><span class="pill pill-green">Active</span></td>
-            <td>489</td>
-            <td>315</td>
-            <td>174</td>
-            <td>5</td>
-            <td>4</td>
-            <td>Email + SMS</td>
-          </tr>
-          <tr>
-            <td class="td-name">Louisville IR Insurance (Original)</td>
-            <td><span class="pill pill-gray">Inactive</span></td>
-            <td>167</td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-            <td>4</td>
-            <td>Email</td>
-          </tr>
-          <tr>
-            <td class="td-name">Louisville IR Industrial Prospects</td>
-            <td><span class="pill pill-gray">Inactive</span></td>
-            <td>208</td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-            <td>4+</td>
-            <td>Email + LinkedIn</td>
+            <td>0</td>
+            <td><span class="status-baseline">Baseline</span></td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td>TOTAL</td>
+            <td>—</td>
+            <td>851</td>
+            <td>626</td>
+            <td>107</td>
+            <td>159</td>
+            <td>22</td>
+            <td>0</td>
+            <td>—</td>
+          </tr>
+        </tfoot>
       </table>
     </div>
-
-    <div class="card" style="margin-bottom:24px;">
-      <table class="perf-table">
+    <div class="card">
+      <h3>Outreach by Channel</h3>
+      <table>
         <thead>
           <tr>
-            <th>Metric</th>
-            <th>Value</th>
-            <th>Rate</th>
-            <th>Status</th>
+            <th>Channel</th>
+            <th>Sequences Using</th>
+            <th>Contacts Reached</th>
             <th>Δ vs Last Period</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="td-name">Total Executions (Emails Sent)</td>
-            <td>3,269</td>
+            <td>Email</td>
+            <td>3 of 3</td>
+            <td>851</td>
+            <td><span class="status-baseline">— (Baseline)</span></td>
+          </tr>
+          <tr>
+            <td>SMS</td>
+            <td>1 of 3 (Buyers Sequence)</td>
+            <td>665</td>
+            <td><span class="status-baseline">— (Baseline)</span></td>
+          </tr>
+          <tr>
+            <td>LinkedIn (Prosp)</td>
+            <td>Not active this period</td>
             <td>—</td>
-            <td><span class="pill pill-green">On Track</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-          <tr>
-            <td class="td-name">SMS Sent</td>
-            <td>37</td>
-            <td>—</td>
-            <td><span class="pill pill-accent">Supplemental</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-          <tr>
-            <td class="td-name">Unique Opens</td>
-            <td>571</td>
-            <td>17.47%</td>
-            <td><span class="pill pill-green">Strong</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-          <tr>
-            <td class="td-name">Unique Clicks</td>
-            <td>99</td>
-            <td>3.03%</td>
-            <td><span class="pill pill-green">Healthy</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-          <tr>
-            <td class="td-name">Unique Replies</td>
-            <td>11</td>
-            <td>0.34%</td>
-            <td><span class="pill pill-accent">Needs Growth</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-          <tr>
-            <td class="td-name">Bounces</td>
-            <td>38</td>
-            <td>1.16%</td>
-            <td><span class="pill pill-green">Low / Good</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-          <tr>
-            <td class="td-name">Out of Office</td>
-            <td>7</td>
-            <td>0.21%</td>
-            <td><span class="pill pill-green">Normal</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-          <tr>
-            <td class="td-name">Meetings Booked</td>
-            <td>0</td>
-            <td>0%</td>
-            <td><span class="pill pill-red">Not Yet</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-          <tr>
-            <td class="td-name">Pipeline Value (Estimated)</td>
-            <td>$25,000</td>
-            <td>—</td>
-            <td><span class="pill pill-accent">Tracked</span></td>
-            <td><span class="pill pill-gray">— Baseline</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <table class="perf-table">
-        <thead>
-          <tr>
-            <th>Audience / Contact List</th>
-            <th>Contacts</th>
-            <th>Target Segment</th>
-            <th>Automations Linked</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="td-name">Home Inspection Buyers Intent (Primary)</td>
-            <td>6,581</td>
-            <td>Home buyers — KY market</td>
-            <td>0 (ready to deploy)</td>
-          </tr>
-          <tr>
-            <td class="td-name">Home Inspection Buyers Intent (Batch 2)</td>
-            <td>915</td>
-            <td>Home buyers — KY market</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td class="td-name">Real Estate Agent Referrals (Mar 30)</td>
-            <td>100</td>
-            <td>RE agents — Louisville area</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td class="td-name">AAA Provided RE Agent List</td>
-            <td>99</td>
-            <td>RE agents — client-provided</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td class="td-name">Insurance KY</td>
-            <td>566</td>
-            <td>Insurance professionals — KY</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td class="td-name">KY Insurance Account Managers</td>
-            <td>420</td>
-            <td>Insurance account managers — KY</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td class="td-name">AI Agent Engagements</td>
-            <td>2</td>
-            <td>Engaged leads from AI agent</td>
-            <td>2</td>
+            <td><span class="status-baseline">— (Baseline)</span></td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- ── PERFORMANCE INSIGHTS ── -->
+  <!-- PERFORMANCE INSIGHTS -->
   <div class="section">
-    <div class="section-title">🔍 Performance Insights</div>
-    <div class="section-sub">Data-backed observations from the baseline period</div>
+    <div class="section-title">Performance Insights</div>
+    <ul class="insight-list">
+      <li><strong>Execution pace is healthy but uneven.</strong> The two agent sequences have executed 222 and 179 steps across fewer than 100 contacts each — multiple steps per contact are being delivered. The Buyers Sequence at 665 contacts has only 225 steps executed, meaning a large portion of that audience hasn't been fully touched yet.</li>
+      <li><strong>No reply signal yet — expected at this stage.</strong> Zero replies across all three sequences is normal in the first reporting cycle. Sequences are 3-step drips and most contacts are still mid-sequence. Reply rate will be the primary engagement KPI to track starting next period.</li>
+      <li><strong>Bounce rate warrants monitoring in the Buyers Sequence.</strong> 14 of 22 total bounces (64%) came from the Buyers Sequence — a 2.1% bounce rate for that list. If this grows next cycle, auditing the source list for data quality is recommended before adding more contacts.</li>
+      <li><strong>Two parallel agent sequences may cause list overlap.</strong> The "Real Estate Agent Referral Sequence" and its Apollo variant appear to target the same agent audience via different list sources. Monitoring for contact duplication is important to avoid over-messaging the same agents.</li>
+      <li><strong>Auto-send is live across all sequences.</strong> All three sequences run with no manual approval required. This maximizes throughput but means message quality and deliverability need to be proactively reviewed each cycle.</li>
+    </ul>
+  </div>
 
-    <div class="obs-list">
-      <div class="obs-item">
-        <div class="obs-icon">📈</div>
-        <div class="obs-content">
-          <div class="obs-title">Open rate is above average — subject lines and sender reputation are working</div>
-          <div class="obs-body">At 17.47%, the open rate across all sequences outperforms typical cold outreach benchmarks (8–12% for cold email). The conversational subject lines — "Helping your buyers move faster" and its RE: thread variants — are resonating. This is a strong foundation to preserve as volume scales.</div>
-        </div>
+  <!-- HIGH INTENT -->
+  <div class="section">
+    <div class="section-title">High-Intent Activity Signals</div>
+    <div class="intent-grid">
+      <div class="intent-card">
+        <h4>Multi-Step Engagement Potential</h4>
+        <p>159 contacts are currently in-progress across all sequences — they've received at least one touch and are queued for follow-up steps. These are the highest-priority contacts to watch for reply signals next cycle.</p>
       </div>
-      <div class="obs-item">
-        <div class="obs-icon">🖱️</div>
-        <div class="obs-content">
-          <div class="obs-title">Website clicks are generating real interest — but no conversion bridge exists yet</div>
-          <div class="obs-body">99 unique clicks to phi-louisville.com suggest genuine intent. However, without a tracked conversion event (booking form, call, or landing page CTA), there is no mechanism to capture this interest. Adding a direct scheduling link or CTA in the email body would close this gap.</div>
-        </div>
+      <div class="intent-card">
+        <h4>Completion Volume</h4>
+        <p>107 contacts completed the full sequence arc without replying. These are warm contacts — a short re-engagement sequence could surface latent interest without additional list spend.</p>
       </div>
-      <div class="obs-item">
-        <div class="obs-icon">💬</div>
-        <div class="obs-content">
-          <div class="obs-title">Reply rate is low but expected — the ask is too passive for early-stage outreach</div>
-          <div class="obs-body">0.34% reply rate (11 replies) reflects a soft CTA approach. The current emails invite prospects to "feel free to reply" — a low-friction ask that generates few responses. Testing a direct question CTA ("Do you have an inspection coming up this week?") is expected to lift reply rate to 1–2%.</div>
-        </div>
+      <div class="intent-card">
+        <h4>Click & Open Tracking Active</h4>
+        <p>Open and click tracking is enabled across all email steps. No data yet in this baseline period — these signals will be the first indicators of high-intent behavior starting next report.</p>
       </div>
-      <div class="obs-item">
-        <div class="obs-icon">🎯</div>
-        <div class="obs-content">
-          <div class="obs-title">Audience lists are built but largely untapped — the pipeline is larger than the outreach</div>
-          <div class="obs-body">Over 9,000 contacts exist across audience lists, but only ~1,340 have been enrolled in sequences. The 6,581-contact Home Inspection Buyers Intent audience has 0 automations linked. Activating this list represents the single largest near-term growth opportunity in the account.</div>
-        </div>
-      </div>
-      <div class="obs-item">
-        <div class="obs-icon">🔗</div>
-        <div class="obs-content">
-          <div class="obs-title">Single-channel outreach is the primary constraint — LinkedIn will change the equation</div>
-          <div class="obs-body">All current outreach is email-only (plus minimal SMS). Prosp (LinkedIn) has not yet launched. Multi-channel presence — email + LinkedIn connection + message — typically lifts reply rates by 2–4x. The upcoming Prosp launch is the highest-leverage next action in the program.</div>
-        </div>
+      <div class="intent-card">
+        <h4>SMS Channel — Buyers Sequence</h4>
+        <p>The Buyers Sequence uses SMS alongside email, giving it a higher-touch profile. SMS reply rates typically outperform email — this channel should be the first to show engagement signals next cycle.</p>
       </div>
     </div>
   </div>
 
-  <!-- ── HIGH INTENT SIGNALS ── -->
+  <!-- OPTIMIZATION -->
   <div class="section">
-    <div class="section-title">🔥 High-Intent Activity Signals</div>
-    <div class="section-sub">Prospects showing above-average engagement behavior — baseline period</div>
-
-    <div class="hi-grid">
-      <div class="hi-card">
-        <div class="hi-name">Nick Wesdorp</div>
-        <div class="hi-company">Jewel-Craft, Inc. · Co-owner/Contracts &amp; Administration</div>
-        <div class="hi-signals">
-          <span class="hi-signal">29 clicks on website link</span>
-          <span class="hi-signal">6 email opens</span>
-          <span class="hi-signal">Unsubscribed via link</span>
-        </div>
+    <div class="section-title">What We Are Working On to Improve Performance</div>
+    <div class="opt-grid">
+      <div class="opt-card">
+        <div class="opt-num">Action 01</div>
+        <h4>Subject Line & Opening Hook Testing</h4>
+        <div class="opt-row"><span>Trigger:</span> 0 replies across all sequences after initial delivery cycle</div>
+        <div class="opt-row"><span>Action:</span> A/B test subject lines and opening sentences on Step 1 of both agent sequences</div>
+        <div class="opt-row"><span>Expected Outcome:</span> First reply signal within 2-week cycle; baseline reply rate established</div>
       </div>
-      <div class="hi-card">
-        <div class="hi-name">Narendra Gaddam</div>
-        <div class="hi-company">ADM (Archer Daniels Midland) · Sr. Enterprise Platform Owner</div>
-        <div class="hi-signals">
-          <span class="hi-signal">3 clicks on website</span>
-          <span class="hi-signal">4 email opens</span>
-          <span class="hi-signal">Repeat engagement</span>
-        </div>
+      <div class="opt-card">
+        <div class="opt-num">Action 02</div>
+        <h4>Buyers Sequence List Hygiene</h4>
+        <div class="opt-row"><span>Trigger:</span> 14 bounces (2.1%) in the Buyers Sequence — highest bounce rate of the three</div>
+        <div class="opt-row"><span>Action:</span> Audit source list; remove invalid emails before adding new contacts</div>
+        <div class="opt-row"><span>Expected Outcome:</span> Bounce rate below 1.5% next cycle; sender domain reputation protected</div>
       </div>
-      <div class="hi-card">
-        <div class="hi-name">Woodie Hippler</div>
-        <div class="hi-company">Any Lab Test Now Kentuckiana · President/Owner</div>
-        <div class="hi-signals">
-          <span class="hi-signal">Clicked website link</span>
-          <span class="hi-signal">5 email opens</span>
-          <span class="hi-signal">Opened within 4 min of send</span>
-        </div>
+      <div class="opt-card">
+        <div class="opt-num">Action 03</div>
+        <h4>Completed Contact Re-Engagement</h4>
+        <div class="opt-row"><span>Trigger:</span> 107 contacts completed the full sequence with no reply</div>
+        <div class="opt-row"><span>Action:</span> Design a 1–2 step re-engagement sequence with a softer CTA (e.g., "still the right time?")</div>
+        <div class="opt-row"><span>Expected Outcome:</span> Surface latent interest from warm contacts without new list spend</div>
       </div>
-      <div class="hi-card">
-        <div class="hi-name">Rusty Underwood</div>
-        <div class="hi-company">Christie's International Real Estate Bluegrass · Owner/CEO</div>
-        <div class="hi-signals">
-          <span class="hi-signal">Clicked website link</span>
-          <span class="hi-signal">2 email opens</span>
-          <span class="hi-signal">RE industry — high relevance</span>
-        </div>
+      <div class="opt-card">
+        <div class="opt-num">Action 04</div>
+        <h4>Agent Sequence Deduplication</h4>
+        <div class="opt-row"><span>Trigger:</span> Two parallel agent sequences targeting the same market segment</div>
+        <div class="opt-row"><span>Action:</span> Cross-reference contact lists between both agent sequences; suppress duplicates</div>
+        <div class="opt-row"><span>Expected Outcome:</span> Cleaner segmentation; reduced unsubscribe risk from over-messaging</div>
       </div>
-      <div class="hi-card">
-        <div class="hi-name">Oles Drobocky</div>
-        <div class="hi-company">Drobocky Orthodontics · Owner/Doctor</div>
-        <div class="hi-signals">
-          <span class="hi-signal">Clicked website link</span>
-          <span class="hi-signal">2 email opens</span>
-          <span class="hi-signal">Multi-step engagement</span>
-        </div>
-      </div>
-      <div class="hi-card">
-        <div class="hi-name">Shelby Marshall</div>
-        <div class="hi-company">Lynn Imaging · Company Owner &amp; CEO</div>
-        <div class="hi-signals">
-          <span class="hi-signal">Clicked website link</span>
-          <span class="hi-signal">Opened + clicked within 30 sec</span>
-          <span class="hi-signal">C-suite decision maker</span>
-        </div>
-      </div>
-      <div class="hi-card">
-        <div class="hi-name">Patrick Hoagland</div>
-        <div class="hi-company">Brandstetter Carroll Inc. · VP/Owner</div>
-        <div class="hi-signals">
-          <span class="hi-signal">Clicked website link</span>
-          <span class="hi-signal">Opened + clicked within 1 min</span>
-          <span class="hi-signal">Architecture/Engineering firm</span>
-        </div>
-      </div>
-      <div class="hi-card">
-        <div class="hi-name">Phillip Blankenship</div>
-        <div class="hi-company">Blankenship Asphalt Tech &amp; Training · President/Owner</div>
-        <div class="hi-signals">
-          <span class="hi-signal">Clicked website link</span>
-          <span class="hi-signal">Opened + clicked within 24 sec</span>
-          <span class="hi-signal">High-speed engagement</span>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:18px; padding:16px 20px; background:#f1f5f9; border-radius:10px; font-size:13px; color:var(--gray-txt);">
-      <strong style="color:var(--brand);">⚠️ Note on Bot Activity:</strong> A portion of opens and clicks are flagged as bot/security scanner activity (Google, Microsoft, AWS). The unique engagement metrics reported (571 opens, 99 clicks) reflect platform-reported unique counts. High-intent signals above are based on human-verified click and open patterns.
-    </div>
-  </div>
-
-  <!-- ── OPTIMIZATION FOCUS ── -->
-  <div class="section">
-    <div class="section-title">⚙️ What We Are Working On to Improve Performance</div>
-    <div class="section-sub">5 specific optimization actions for the next cycle</div>
-
-    <div class="opt-list">
-      <div class="opt-item">
-        <div class="opt-num">1</div>
-        <div class="opt-content">
-          <div class="opt-trigger">Trigger: Prosp campaign not yet active</div>
-          <div class="opt-action">Launch LinkedIn outreach (Prosp) targeting Louisville-area real estate agents</div>
-          <div class="opt-outcome">Expected outcome: <strong>Multi-channel presence increases reply rate by 2–4x</strong>. Email + LinkedIn connection + message sequence is the highest-leverage action in the program right now.</div>
-        </div>
-      </div>
-      <div class="opt-item">
-        <div class="opt-num">2</div>
-        <div class="opt-content">
-          <div class="opt-trigger">Trigger: 0.34% reply rate — CTA is too passive</div>
-          <div class="opt-action">Test a direct question CTA in Email 1 ("Do you have an inspection coming up in the next 30 days?")</div>
-          <div class="opt-outcome">Expected outcome: <strong>Reply rate improves to 1–2%</strong>. Direct questions outperform soft invitations in cold outreach by 3–5x on average.</div>
-        </div>
-      </div>
-      <div class="opt-item">
-        <div class="opt-num">3</div>
-        <div class="opt-content">
-          <div class="opt-trigger">Trigger: 99 website clicks with no tracked conversion</div>
-          <div class="opt-action">Add a Calendly or direct booking link inside the email body as a secondary CTA</div>
-          <div class="opt-outcome">Expected outcome: <strong>Meetings booked directly from email sequence</strong>. Converts existing click interest into scheduled calls without requiring a reply.</div>
-        </div>
-      </div>
-      <div class="opt-item">
-        <div class="opt-num">4</div>
-        <div class="opt-content">
-          <div class="opt-trigger">Trigger: 6,581-contact Home Inspection Buyers Intent list has 0 automations</div>
-          <div class="opt-action">Activate the primary audience list into a new nurture or referral sequence</div>
-          <div class="opt-outcome">Expected outcome: <strong>Dramatically increases total outreach volume and pipeline reach</strong>. This is the largest untapped asset in the account — activating even 20% would add 1,300+ new prospects to outreach.</div>
-        </div>
-      </div>
-      <div class="opt-item">
-        <div class="opt-num">5</div>
-        <div class="opt-content">
-          <div class="opt-trigger">Trigger: High-intent clickers identified but not followed up</div>
-          <div class="opt-action">Create a hot-lead re-engagement sequence for contacts with 2+ clicks or 3+ opens and no reply</div>
-          <div class="opt-outcome">Expected outcome: <strong>Converts warm signals into conversations</strong>. The 8 high-intent contacts identified this period are prime candidates for a personalized follow-up or LinkedIn connection request.</div>
-        </div>
+      <div class="opt-card">
+        <div class="opt-num">Action 05</div>
+        <h4>SMS CTA Optimization — Buyers Sequence</h4>
+        <div class="opt-row"><span>Trigger:</span> SMS channel active but no replies in baseline period</div>
+        <div class="opt-row"><span>Action:</span> Review SMS copy and CTA; ensure ask is simple and mobile-native (e.g., "Reply YES to get started")</div>
+        <div class="opt-row"><span>Expected Outcome:</span> First SMS reply signal by next cycle; SMS outperforms email on reply rate</div>
       </div>
     </div>
   </div>
 
-  <!-- ── CHANGE SUMMARY ── -->
+  <!-- CHANGE SUMMARY -->
   <div class="section">
-    <div class="section-title">📝 What Changed Since the Last Update</div>
-    <div class="section-sub">This is Report #1 — the benchmark report. Period-over-period comparisons begin next cycle.</div>
-
+    <div class="section-title">What Changed Since the Last Update</div>
     <div class="change-box">
-      <div class="cb-headline">📊 Baseline Report — Benchmark Established</div>
-      <div class="cb-body">
-        This is the first performance report for AAA Pro Home Inspectors. All metrics in this dashboard serve as the official baseline against which all future period-over-period comparisons will be measured. The program launched in late September 2025 and has been building infrastructure and audience throughout this period. Active sequences are now running daily, the core audience is built, and the Prosp (LinkedIn) channel is next to launch. Starting next report (≈ May 4, 2026), every metric will show a Δ vs this baseline.
-      </div>
-      <div class="cb-stats">
-        <div class="cs-item">
-          <div class="cs-val">6</div>
-          <div class="cs-lbl">Sequences Created</div>
-        </div>
-        <div class="cs-item">
-          <div class="cs-val">9,000+</div>
-          <div class="cs-lbl">Contacts Identified</div>
-        </div>
-        <div class="cs-item">
-          <div class="cs-val">3,269</div>
-          <div class="cs-lbl">Emails Sent</div>
-        </div>
-        <div class="cs-item">
-          <div class="cs-val">17.47%</div>
-          <div class="cs-lbl">Open Rate Established</div>
-        </div>
-        <div class="cs-item">
-          <div class="cs-val">3.03%</div>
-          <div class="cs-lbl">Click Rate Established</div>
-        </div>
-        <div class="cs-item">
-          <div class="cs-val">$25K</div>
-          <div class="cs-lbl">Pipeline Value Tracked</div>
-        </div>
-      </div>
+      <p>This is <strong>Report #001 — the Benchmark Report</strong> for AAA Pro Home Inspectors. There is no prior period to compare against. All metrics captured here represent the starting baseline. Period-over-period comparisons, trend lines, and delta indicators will begin in <strong>Report #002</strong>, scheduled for <strong>May 6, 2026</strong>. At that point, all current metrics — contacts, executions, completions, bounces, replies, and bookings — will serve as the reference point for measuring growth and performance change.</p>
     </div>
   </div>
 
-</div><!-- /main -->
+</div>
 
-<!-- ── FOOTER ── -->
+<!-- FOOTER -->
 <div class="footer">
-  <strong>MercenaryMarketing.ai</strong> &nbsp;·&nbsp; AAA Pro Home Inspectors Performance Dashboard &nbsp;·&nbsp; Report #1 — Baseline Period &nbsp;·&nbsp; Sep 22, 2025 – Apr 20, 2026 &nbsp;·&nbsp; 🔒 Confidential
+  <p>Generated by MercenaryMarketing.ai &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; AAA Pro Home Inspectors &nbsp;·&nbsp; Report #001 &nbsp;·&nbsp; April 22, 2026</p>
 </div>
 
 </body>
