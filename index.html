@@ -1,469 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AAA Pro Home Inspectors — MMai Performance Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAA Pro Home Inspectors | Report #2 | MercenaryMarketing.ai</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #1a1a2e; }
-
-  .header {
-    background: linear-gradient(135deg, #0a2342 0%, #1a3a5c 60%, #1e5a8e 100%);
-    color: #fff; padding: 48px 40px 36px; width: 100%;
-  }
-  .header-inner { max-width: 1440px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
-  .header-left h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
-  .header-left p { font-size: 1rem; opacity: 0.8; margin-top: 4px; }
-  .header-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-  .badge { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-  .badge-biweekly { background: #1e90ff; color: #fff; }
-  .badge-baseline { background: #f59e0b; color: #1a1a2e; }
-  .badge-confidential { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
-  .header-meta { text-align: right; }
-  .header-meta .report-num { font-size: 0.85rem; opacity: 0.65; margin-bottom: 4px; }
-  .header-meta .report-period { font-size: 1rem; font-weight: 600; }
-
-  .cadence-bar { background: #0d1b2a; color: #fff; width: 100%; padding: 28px 40px; }
-  .cadence-inner { max-width: 1440px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 0; }
-  .cadence-block { flex: 1 1 200px; padding: 12px 28px 12px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 28px; }
-  .cadence-block:last-child { border-right: none; margin-right: 0; }
-  .cadence-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #7eb3d8; font-weight: 700; margin-bottom: 6px; }
-  .cadence-value { font-size: 1rem; font-weight: 600; color: #fff; line-height: 1.4; }
-
-  .main { max-width: 1440px; margin: 0 auto; padding: 48px 40px; }
-  .section { margin-bottom: 60px; }
-  .section-title { font-size: 1.25rem; font-weight: 800; color: #0a2342; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 14px; margin-bottom: 28px; border-bottom: 2px solid #1e90ff; }
-
-  .ai-insights-box { background: linear-gradient(135deg, #0a2342 0%, #1a3a5c 100%); border-radius: 16px; padding: 36px 40px; color: #fff; margin-bottom: 28px; }
-  .ai-insights-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; color: #7eb3d8; text-transform: uppercase; letter-spacing: 0.5px; }
-  .ai-insights-box p { font-size: 1rem; line-height: 1.75; opacity: 0.92; }
-  .ai-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-  .ai-card { background: #fff; border-radius: 12px; padding: 24px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 4px solid #1e90ff; }
-  .ai-card h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #1e90ff; font-weight: 700; margin-bottom: 10px; }
-  .ai-card p { font-size: 0.92rem; line-height: 1.6; color: #333; }
-
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-  .kpi-card { background: #fff; border-radius: 14px; padding: 28px 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border-top: 4px solid #1e90ff; display: flex; flex-direction: column; gap: 8px; }
-  .kpi-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px; color: #888; font-weight: 700; }
-  .kpi-value { font-size: 2.2rem; font-weight: 800; color: #0a2342; line-height: 1; }
-  .kpi-sub { font-size: 0.85rem; color: #555; line-height: 1.4; }
-  .kpi-source { font-size: 0.75rem; color: #1e90ff; font-weight: 600; }
-  .kpi-delta { font-size: 0.8rem; color: #f59e0b; font-weight: 700; margin-top: 4px; }
-
-  .funnel-wrapper { display: flex; gap: 16px; flex-wrap: wrap; }
-  .funnel-step { flex: 1 1 160px; background: #fff; border-radius: 12px; padding: 28px 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); text-align: center; position: relative; }
-  .funnel-step + .funnel-step::before { content: '→'; position: absolute; left: -14px; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: #1e90ff; font-weight: 700; }
-  .funnel-step-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: #888; font-weight: 700; margin-bottom: 10px; }
-  .funnel-step-value { font-size: 1.9rem; font-weight: 800; color: #0a2342; margin-bottom: 6px; }
-  .funnel-step-sub { font-size: 0.8rem; color: #555; margin-bottom: 8px; line-height: 1.4; }
-  .funnel-step-delta { font-size: 0.75rem; color: #f59e0b; font-weight: 700; }
-
-  .card { background: #fff; border-radius: 14px; padding: 28px 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin-bottom: 24px; }
-  .card h3 { font-size: 1rem; font-weight: 700; color: #0a2342; margin-bottom: 20px; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-  th { text-align: left; padding: 10px 14px; background: #f0f4f8; color: #0a2342; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
-  td { padding: 12px 14px; border-bottom: 1px solid #f0f4f8; color: #333; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tfoot td { background: #f0f4f8; font-weight: 700; color: #0a2342; }
-  .status-baseline { color: #f59e0b; font-weight: 600; }
-
-  .insight-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
-  .insight-list li { background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-left: 4px solid #1e90ff; font-size: 0.93rem; line-height: 1.6; color: #222; }
-  .insight-list li strong { color: #0a2342; }
-
-  .opt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-  .opt-card { background: #fff; border-radius: 14px; padding: 26px 28px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); border-top: 4px solid #0a2342; }
-  .opt-num { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #1e90ff; font-weight: 700; margin-bottom: 10px; }
-  .opt-card h4 { font-size: 0.95rem; font-weight: 700; color: #0a2342; margin-bottom: 12px; }
-  .opt-row { font-size: 0.85rem; color: #444; line-height: 1.55; margin-bottom: 6px; }
-  .opt-row span { font-weight: 700; color: #0a2342; }
-
-  .intent-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-  .intent-card { background: #fff; border-radius: 12px; padding: 24px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 4px solid #f59e0b; }
-  .intent-card h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #f59e0b; font-weight: 700; margin-bottom: 10px; }
-  .intent-card p { font-size: 0.9rem; line-height: 1.6; color: #333; }
-
-  .change-box { background: #fff; border-radius: 14px; padding: 32px 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
-  .change-box p { font-size: 0.95rem; line-height: 1.75; color: #333; }
-
-  .footer { text-align: center; padding: 32px 20px; font-size: 0.8rem; color: #aaa; border-top: 1px solid #e5e7eb; margin-top: 20px; }
-
-  @media (max-width: 768px) {
-    .header-inner { flex-direction: column; }
-    .header-meta { text-align: left; }
-    .cadence-inner { flex-direction: column; gap: 16px; }
-    .cadence-block { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px; margin-right: 0; }
-    .cadence-block:last-child { border-bottom: none; }
-    .main { padding: 32px 20px; }
-    .funnel-wrapper { flex-direction: column; }
-    .funnel-step + .funnel-step::before { display: none; }
-    table { font-size: 0.78rem; }
-    th, td { padding: 8px 10px; }
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#f0f2f6;color:#1a1f2e;font-size:15px;line-height:1.6}
+.header{background:linear-gradient(135deg,#1b3a1a 0%,#2e7d32 60%,#43a047 100%);color:#fff;padding:48px 40px 40px}
+.hdr-inner{max-width:1440px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:24px}
+.hdr-left h1{font-size:2.2rem;font-weight:800;letter-spacing:-0.5px;line-height:1.2;margin-bottom:8px}
+.hdr-left .subtitle{font-size:1.05rem;opacity:0.85;margin-bottom:16px}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}
+.badge-interim{background:#ff9800;color:#fff}
+.badge-baseline{background:#ffd54f;color:#1a1f2e}
+.badge-conf{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.2)}
+.hdr-right{text-align:right;font-size:0.88rem;opacity:0.78;line-height:2}
+.hdr-logo{font-size:1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:0.6;margin-bottom:12px}
+.cadence-bar{background:#fff;border-bottom:1px solid #e1e4e8;padding:20px 40px}
+.cb-inner{max-width:1440px;margin:0 auto;display:flex;gap:32px;flex-wrap:wrap}
+.cb-block{flex:1;min-width:140px}
+.cb-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:#8892a4;font-weight:700;margin-bottom:4px}
+.cb-value{font-size:1.05rem;font-weight:700;color:#1a1f2e}
+.cb-sub{font-size:0.78rem;color:#8892a4}
+.main{max-width:1440px;margin:0 auto;padding:32px 40px 60px}
+.section{margin-bottom:40px}
+.section-title{font-size:1.3rem;font-weight:800;color:#2e7d32;margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:2px solid #e1e4e8}
+.alert-banner{background:#fff3e0;border-left:4px solid #e53935;border-radius:8px;padding:18px 24px;margin-bottom:24px}
+.alert-banner h3{color:#c62828;font-size:1rem;margin-bottom:4px}
+.alert-banner p{color:#5a6275;font-size:0.85rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.kpi-card{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.kpi-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:#8892a4;font-weight:700;margin-bottom:6px}
+.kpi-value{font-size:2rem;font-weight:800;color:#1a1f2e}
+.kpi-sub{font-size:0.8rem;color:#8892a4}
+.kpi-delta{font-size:0.78rem;font-weight:700;margin-top:4px}
+.kpi-d-neg{color:#e53935}
+.kpi-d-pos{color:#43a047}
+.seq-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.seq-table th{background:#f8f9fb;padding:12px 14px;text-align:left;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.5px;color:#8892a4;font-weight:700;border-bottom:2px solid #e1e4e8}
+.seq-table td{padding:12px 14px;border-bottom:1px solid #f0f2f6;font-size:0.9rem}
+.seq-name{font-weight:700;color:#1a1f2e;max-width:320px}
+.seq-note{font-size:0.78rem;color:#8892a4}
+.s-paused{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;background:#ffebee;color:#c62828}
+.m-good{color:#43a047;font-weight:700}
+.m-warn{color:#e53935;font-weight:700}
+.insights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.insight-card{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.ic-icon{font-size:1.5rem;margin-bottom:8px}
+.ic-title{font-weight:700;font-size:0.95rem;margin-bottom:8px;color:#1a1f2e}
+.ic-body{font-size:0.85rem;color:#5a6275;line-height:1.5}
+.ns-list{list-style:none}
+.ns-item{background:#fff;border-radius:10px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.ns-prio{width:32px;height:32px;border-radius:50%;background:#2e7d32;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem;flex-shrink:0}
+.ns-action{font-weight:700;font-size:0.9rem;color:#1a1f2e}
+.ns-detail{font-size:0.82rem;color:#5a6275;margin-top:4px}
+.note-callout{background:#fff;border-left:4px solid #2e7d32;border-radius:6px;padding:14px 20px;font-size:0.85rem;color:#5a6275;line-height:1.6}
+.error{background:#fff0f0;color:#c62828;padding:20px;border-radius:8px}
+@media(max-width:768px){.header,.cadence-bar,.main{padding-left:20px;padding-right:20px}.hdr-left h1{font-size:1.6rem}.kpi-grid{grid-template-columns:repeat(2,1fr)}.insights-grid{grid-template-columns:1fr}}
 </style>
+  <!-- cache-bust: 2026-06-18-1739 -->
 </head>
 <body>
+<div class="header"><div class="hdr-inner"><div class="hdr-left"><div class="hdr-logo">MercenaryMarketing.ai</div><h1>AAA Pro Home Inspectors</h1><div class="subtitle" id="periodLabel">Performance Dashboard</div><div class="badges"><span class="badge badge-interim" id="badgeType">Report</span><span class="badge badge-baseline" id="badgeBaseline">Baseline</span><span class="badge badge-conf">Confidential</span></div></div><div class="hdr-right" id="reportMeta"></div></div></div>
+<div class="cadence-bar"><div class="cb-inner"><div class="cb-block"><div class="cb-label">Report Type</div><div class="cb-value" id="cbType">--</div></div><div class="cb-block"><div class="cb-label">Period</div><div class="cb-value" id="cbPeriod">--</div><div class="cb-sub" id="cbDays">--</div></div><div class="cb-block"><div class="cb-label">Baseline</div><div class="cb-value" id="cbBaselinePeriod">--</div><div class="cb-sub" id="cbBaselineDesc">--</div></div><div class="cb-block"><div class="cb-label">Next Report</div><div class="cb-value" id="cbNext">--</div></div></div></div>
+<div class="main" id="mainContent"><div class="error">Loading report data...</div></div>
+<script>
+fetch('report.json?v=5')
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
+  .then(function(d){
+var r=d.report,ov=d.overview,cp=d.comparison,pd=cp.periodDelta,seqs=d.sequences,ins=d.insights,ns=d.nextSteps,mb=d.matchback,notes=d.notes;
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-inner">
-    <div class="header-left">
-      <h1>AAA Pro Home Inspectors</h1>
-      <p>MercenaryMarketing.ai — Performance Dashboard</p>
-      <div class="header-badges">
-        <span class="badge badge-biweekly">Biweekly Report</span>
-        <span class="badge badge-baseline">Baseline Period</span>
-        <span class="badge badge-confidential">Confidential</span>
-      </div>
-    </div>
-    <div class="header-meta">
-      <div class="report-num">Report #001</div>
-      <div class="report-period">Through April 22, 2026</div>
-    </div>
-  </div>
-</div>
+document.getElementById('periodLabel').textContent = r.periodLabel + ' -- #' + r.reportNumber;
+document.getElementById('badgeType').textContent = r.periodLabel;
+document.getElementById('badgeBaseline').textContent = 'Baseline: ' + cp.baseline.period;
+document.getElementById('reportMeta').innerHTML =
+  '<strong>Generated:</strong> ' + r.generated +
+  '<br><strong>Dashboard:</strong> <a href="' + r.dashboardUrl + '" style="color:#fff;opacity:0.7">' + r.dashboardUrl + '</a>';
 
-<!-- CADENCE BAR -->
-<div class="cadence-bar">
-  <div class="cadence-inner">
-    <div class="cadence-block">
-      <div class="cadence-label">Report Cadence</div>
-      <div class="cadence-value">Biweekly — Every 2 Weeks</div>
-    </div>
-    <div class="cadence-block">
-      <div class="cadence-label">Next Update</div>
-      <div class="cadence-value">May 6, 2026</div>
-    </div>
-    <div class="cadence-block">
-      <div class="cadence-label">Data Sources</div>
-      <div class="cadence-value">MMai (Email / SMS / Sequences / Lists)</div>
-    </div>
-    <div class="cadence-block">
-      <div class="cadence-label">Comparison Note</div>
-      <div class="cadence-value">Period-over-period comparisons begin next report</div>
-    </div>
-  </div>
-</div>
+document.getElementById('cbType').textContent = r.periodLabel;
+document.getElementById('cbPeriod').textContent = r.periodStart + ' -- ' + r.periodEnd;
+document.getElementById('cbDays').textContent = r.periodDays + '-Day Period';
+document.getElementById('cbBaselinePeriod').textContent = cp.baseline.period;
+document.getElementById('cbBaselineDesc').textContent = 'Report #1 Baseline';
+document.getElementById('cbNext').textContent = notes.nextReport;
 
-<!-- MAIN -->
-<div class="main">
+var h = '';
 
-  <!-- AI INSIGHTS -->
-  <div class="section">
-    <div class="section-title">AI Insights</div>
-    <div class="ai-insights-box">
-      <h3>Overall Performance Summary</h3>
-      <p>This is the baseline report for AAA Pro Home Inspectors. Three active email and SMS sequences are live across 851 total contacts, with 626 steps executed to date. All three sequences are running on auto-send and in active delivery. The primary outreach channel is email targeting real estate agents in the Louisville, KY market, with a secondary SMS-enabled buyer-facing sequence. No replies or bookings have been recorded yet — consistent with early-stage sequence activity where pipeline warm-up precedes conversion. The data captured here establishes the performance baseline for all future period-over-period comparisons.</p>
-    </div>
-    <div class="ai-cards">
-      <div class="ai-card">
-        <h4>Strongest Channel</h4>
-        <p>Email outreach via the Real Estate Agent Referral Sequence is the most active pipeline — 99 contacts, 222 executed steps across a 3-step sequence running 7 days/week.</p>
-      </div>
-      <div class="ai-card">
-        <h4>Largest Audience</h4>
-        <p>The Home Inspection Buyers Sequence holds the largest audience at 665 contacts, though only 225 steps executed — many contacts are still early in the sequence.</p>
-      </div>
-      <div class="ai-card">
-        <h4>Engagement Signal</h4>
-        <p>No replies or bookings yet. Normal for a baseline period. Open and click tracking is enabled — engagement data will populate starting next cycle.</p>
-      </div>
-      <div class="ai-card">
-        <h4>Bounce Watch</h4>
-        <p>22 total bounces across all sequences (2.6%). The Buyers Sequence accounts for 14 of those — list hygiene review recommended before adding new contacts.</p>
-      </div>
-    </div>
-  </div>
+// Pipeline Overview
+h += '<div class="section"><div class="section-title">Pipeline Overview</div><div class="kpi-grid">';
+h += kc('Total Members', ov.totalMembers, 'across 3 sequences');
+h += kc('Completed', ov.completedMembers, 'all steps finished');
+h += kc('In Progress', ov.inProgressMembers, 'mid-sequence');
+h += kc('Not Started', ov.notStartedMembers, 'queued in pipeline', ov.notStartedMembers > 100);
+h += kc('Total Sent', ov.totalSent, 'across all sequences');
+h += kc('Active Sequences', ov.activeSequences + ' of ' + ov.totalSequences, ov.pausedSequences + ' paused');
+h += '</div></div>';
 
-  <!-- EXECUTIVE SUMMARY -->
-  <div class="section">
-    <div class="section-title">Executive Summary</div>
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Total Contacts</div>
-        <div class="kpi-value">851</div>
-        <div class="kpi-sub">Across 3 active sequences</div>
-        <div class="kpi-source">Source: MMai Sequences</div>
-        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Steps Executed</div>
-        <div class="kpi-value">626</div>
-        <div class="kpi-sub">Emails & SMS delivered across all sequences</div>
-        <div class="kpi-source">Source: MMai Sequences</div>
-        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Completed Members</div>
-        <div class="kpi-value">107</div>
-        <div class="kpi-sub">Contacts who finished all sequence steps</div>
-        <div class="kpi-source">Source: MMai Sequences</div>
-        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">In Progress</div>
-        <div class="kpi-value">159</div>
-        <div class="kpi-sub">Contacts actively moving through sequences</div>
-        <div class="kpi-source">Source: MMai Sequences</div>
-        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Replies</div>
-        <div class="kpi-value">0</div>
-        <div class="kpi-sub">No replies recorded this baseline period</div>
-        <div class="kpi-source">Source: MMai Sequences</div>
-        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Meetings Booked</div>
-        <div class="kpi-value">0</div>
-        <div class="kpi-sub">No bookings recorded this baseline period</div>
-        <div class="kpi-source">Source: Calendly (client-reported)</div>
-        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Bounces</div>
-        <div class="kpi-value">22</div>
-        <div class="kpi-sub">2.6% of total contacts bounced</div>
-        <div class="kpi-source">Source: MMai Sequences</div>
-        <div class="kpi-delta">Δ vs Last Period: — (Baseline)</div>
-      </div>
-    </div>
-  </div>
+// Engagement
+h += '<div class="section"><div class="section-title">Engagement Overview</div><div class="kpi-grid">';
+h += kc('Unique Opens', ov.totalUniqueOpens, 'overall OR: ' + ov.openRate + '%');
+h += kc('Unique Clicks', ov.totalUniqueClicks, 'overall CR: ' + ov.clickRate + '%');
+h += kc('Total Replies', ov.totalReplies, 'across all sequences');
+h += kc('Total Bounces', ov.totalBounces, 'overall BR: ' + ov.bounceRate + '%');
+h += kc('Out of Office', ov.totalOOO, 'auto-replies');
+h += kc('Bookings', ov.totalBookings, '<span style="color:#e65100">not tracked in system</span>');
+h += '</div>';
+h += '<div class="note-callout" style="margin-top:12px"><strong>Booking Disclaimer:</strong> ' + ov.bookingTrackingNote + '</div></div>';
 
-  <!-- FUNNEL -->
-  <div class="section">
-    <div class="section-title">Funnel Overview</div>
-    <div class="funnel-wrapper">
-      <div class="funnel-step">
-        <div class="funnel-step-label">Intent / Audience</div>
-        <div class="funnel-step-value">851</div>
-        <div class="funnel-step-sub">Total contacts loaded across 3 sequences</div>
-        <div class="funnel-step-delta">Δ: — (Baseline)</div>
-      </div>
-      <div class="funnel-step">
-        <div class="funnel-step-label">Outreach Sent</div>
-        <div class="funnel-step-value">626</div>
-        <div class="funnel-step-sub">Steps executed (email + SMS)</div>
-        <div class="funnel-step-delta">Δ: — (Baseline)</div>
-      </div>
-      <div class="funnel-step">
-        <div class="funnel-step-label">Engagement</div>
-        <div class="funnel-step-value">—</div>
-        <div class="funnel-step-sub">Opens & clicks tracked; data populates next cycle</div>
-        <div class="funnel-step-delta">Δ: — (Baseline)</div>
-      </div>
-      <div class="funnel-step">
-        <div class="funnel-step-label">Conversations</div>
-        <div class="funnel-step-value">0</div>
-        <div class="funnel-step-sub">Replies received across all sequences</div>
-        <div class="funnel-step-delta">Δ: — (Baseline)</div>
-      </div>
-      <div class="funnel-step">
-        <div class="funnel-step-label">Meetings</div>
-        <div class="funnel-step-value">0</div>
-        <div class="funnel-step-sub">Bookings recorded this period</div>
-        <div class="funnel-step-delta">Δ: — (Baseline)</div>
-      </div>
-    </div>
-  </div>
+// Period Comparison
+h += '<div class="section"><div class="section-title">Period-over-Period Comparison</div><div class="kpi-grid">';
+h += cc('Completed Members', cp.current.completedMembers, cp.baseline.completedMembers, pd.completedMembers + ' (' + pd.completedMembersPct + ')');
+h += cc('In Progress', cp.current.inProgress, cp.baseline.inProgress, pd.inProgressChange + ' (' + pd.inProgressPct + ')', true);
+h += cc('Bounces', cp.current.bounces, cp.baseline.bounces, pd.bounces + ' (' + pd.bouncesPct + ')');
+h += cc('Replies', cp.current.replies, cp.baseline.replies, String(pd.replies));
+h += cc('Active Sequences', cp.current.activeSequences, cp.baseline.activeSequences, pd.activeSequences, true);
+h += '</div></div>';
 
-  <!-- PERFORMANCE BREAKDOWN -->
-  <div class="section">
-    <div class="section-title">Performance Breakdown</div>
-    <div class="card">
-      <h3>Sequence-Level Breakdown</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Sequence</th>
-            <th>Channel</th>
-            <th>Members</th>
-            <th>Steps Executed</th>
-            <th>Completed</th>
-            <th>In Progress</th>
-            <th>Bounced</th>
-            <th>Replies</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Real Estate Agent Referral Sequence</td>
-            <td>Email (3-step)</td>
-            <td>99</td>
-            <td>222</td>
-            <td>40</td>
-            <td>59</td>
-            <td>4</td>
-            <td>0</td>
-            <td><span class="status-baseline">Baseline</span></td>
-          </tr>
-          <tr>
-            <td>Real Estate Agent Referral Sequence — Apollo</td>
-            <td>Email (3-step)</td>
-            <td>87</td>
-            <td>179</td>
-            <td>28</td>
-            <td>59</td>
-            <td>4</td>
-            <td>0</td>
-            <td><span class="status-baseline">Baseline</span></td>
-          </tr>
-          <tr>
-            <td>Home Inspection Buyers Sequence</td>
-            <td>SMS + Email (3-step)</td>
-            <td>665</td>
-            <td>225</td>
-            <td>39</td>
-            <td>41</td>
-            <td>14</td>
-            <td>0</td>
-            <td><span class="status-baseline">Baseline</span></td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td>TOTAL</td>
-            <td>—</td>
-            <td>851</td>
-            <td>626</td>
-            <td>107</td>
-            <td>159</td>
-            <td>22</td>
-            <td>0</td>
-            <td>—</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-    <div class="card">
-      <h3>Outreach by Channel</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Channel</th>
-            <th>Sequences Using</th>
-            <th>Contacts Reached</th>
-            <th>Δ vs Last Period</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Email</td>
-            <td>3 of 3</td>
-            <td>851</td>
-            <td><span class="status-baseline">— (Baseline)</span></td>
-          </tr>
-          <tr>
-            <td>SMS</td>
-            <td>1 of 3 (Buyers Sequence)</td>
-            <td>665</td>
-            <td><span class="status-baseline">— (Baseline)</span></td>
-          </tr>
-          <tr>
-            <td>LinkedIn (Prosp)</td>
-            <td>Not active this period</td>
-            <td>—</td>
-            <td><span class="status-baseline">— (Baseline)</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+// Sequence table
+h += '<div class="section"><div class="section-title">Sequence Status & Performance</div>';
+h += '<div style="overflow-x:auto"><table class="seq-table"><thead><tr>';
+h += '<th>Sequence</th><th>Status</th><th>Members</th><th>Sent</th><th>Opens</th><th>OR</th><th>Clicks</th><th>CR</th><th>Bounces</th><th>BR</th></tr></thead><tbody>';
+seqs.forEach(function(s) {
+  h += '<tr>';
+  h += '<td><div class="seq-name">' + s.name + '</div><div class="seq-note">' + s.note + '</div></td>';
+  h += '<td><span class="s-paused">PAUSED</span></td>';
+  h += '<td>' + s.members + '</td>';
+  h += '<td>' + s.sent + '</td>';
+  h += '<td class="' + (s.openRate > 80 ? 'm-good' : '') + '">' + s.uniqueOpens + '</td>';
+  h += '<td class="' + (s.openRate > 80 ? 'm-good' : '') + '">' + s.openRate.toFixed(2) + '%</td>';
+  h += '<td class="' + (s.clickRate > 3 ? 'm-good' : '') + '">' + s.uniqueClicks + '</td>';
+  h += '<td class="' + (s.clickRate > 3 ? 'm-good' : '') + '">' + s.clickRate.toFixed(2) + '%</td>';
+  h += '<td class="' + (s.bounceRate > 5 ? 'm-warn' : '') + '">' + s.bounces + '</td>';
+  h += '<td class="' + (s.bounceRate > 5 ? 'm-warn' : '') + '">' + s.bounceRate.toFixed(2) + '%</td>';
+  h += '</tr>';
+});
+h += '</tbody></table></div>';
+h += '<div class="note-callout" style="margin-top:16px"><strong>Notes:</strong> ' + notes.dataAvailability + '. ' + notes.ncNearRemoval + '.</div></div>';
 
-  <!-- PERFORMANCE INSIGHTS -->
-  <div class="section">
-    <div class="section-title">Performance Insights</div>
-    <ul class="insight-list">
-      <li><strong>Execution pace is healthy but uneven.</strong> The two agent sequences have executed 222 and 179 steps across fewer than 100 contacts each — multiple steps per contact are being delivered. The Buyers Sequence at 665 contacts has only 225 steps executed, meaning a large portion of that audience hasn't been fully touched yet.</li>
-      <li><strong>No reply signal yet — expected at this stage.</strong> Zero replies across all three sequences is normal in the first reporting cycle. Sequences are 3-step drips and most contacts are still mid-sequence. Reply rate will be the primary engagement KPI to track starting next period.</li>
-      <li><strong>Bounce rate warrants monitoring in the Buyers Sequence.</strong> 14 of 22 total bounces (64%) came from the Buyers Sequence — a 2.1% bounce rate for that list. If this grows next cycle, auditing the source list for data quality is recommended before adding more contacts.</li>
-      <li><strong>Two parallel agent sequences may cause list overlap.</strong> The "Real Estate Agent Referral Sequence" and its Apollo variant appear to target the same agent audience via different list sources. Monitoring for contact duplication is important to avoid over-messaging the same agents.</li>
-      <li><strong>Auto-send is live across all sequences.</strong> All three sequences run with no manual approval required. This maximizes throughput but means message quality and deliverability need to be proactively reviewed each cycle.</li>
-    </ul>
-  </div>
+// Insights
+h += '<div class="section"><div class="section-title">Key Insights</div><div class="insights-grid">';
+var ico = {warning: 'WARN', info: 'INFO', positive: 'GOOD', neutral: 'NOTE'};
+ins.forEach(function(i) {
+  h += '<div class="insight-card"><div class="ic-icon">[' + ico[i.severity] + ']</div><div class="ic-title">' + i.title + '</div><div class="ic-body">' + i.detail + '</div></div>';
+});
+h += '</div></div>';
 
-  <!-- HIGH INTENT -->
-  <div class="section">
-    <div class="section-title">High-Intent Activity Signals</div>
-    <div class="intent-grid">
-      <div class="intent-card">
-        <h4>Multi-Step Engagement Potential</h4>
-        <p>159 contacts are currently in-progress across all sequences — they've received at least one touch and are queued for follow-up steps. These are the highest-priority contacts to watch for reply signals next cycle.</p>
-      </div>
-      <div class="intent-card">
-        <h4>Completion Volume</h4>
-        <p>107 contacts completed the full sequence arc without replying. These are warm contacts — a short re-engagement sequence could surface latent interest without additional list spend.</p>
-      </div>
-      <div class="intent-card">
-        <h4>Click & Open Tracking Active</h4>
-        <p>Open and click tracking is enabled across all email steps. No data yet in this baseline period — these signals will be the first indicators of high-intent behavior starting next report.</p>
-      </div>
-      <div class="intent-card">
-        <h4>SMS Channel — Buyers Sequence</h4>
-        <p>The Buyers Sequence uses SMS alongside email, giving it a higher-touch profile. SMS reply rates typically outperform email — this channel should be the first to show engagement signals next cycle.</p>
-      </div>
-    </div>
-  </div>
+// Matchback
+if (mb) {
+  h += '<div class="section"><div class="section-title">Inspection Matchback</div>';
+  h += '<div class="alert-banner" style="background:#e8f5e9;border-left:4px solid #43a047"><h3 style="color:#2e7d32">' + mb.matchRate + ' of ' + mb.inspectionsTotal + ' inspections traced to sequences</h3><p>' + mb.verdict + '</p></div>';
+  h += '<div class="kpi-grid">';
+  h += kc('Inspections Checked', mb.inspectionsTotal, mb.inspectionEmails + ' unique emails');
+  h += kc('Inspection Email Type', mb.inspectionEmailType, '');
+  h += kc('Sequences Checked', mb.sequencesChecked, mb.sequencesTotalContacts + ' total contacts');
+  h += kc('Match Rate', mb.matchRate, '');
+  h += '</div>';
+  h += '<div style="margin-top:20px"><strong>Sequence Breakdown</strong></div>';
+  h += '<div style="overflow-x:auto"><table class="seq-table"><thead><tr><th>Sequence</th><th>Members</th><th>Target Audience</th><th>Contact Type</th></tr></thead><tbody>';
+  mb.breakdown.forEach(function(b) {
+    h += '<tr><td>' + b.sequence + '</td><td>' + b.members + '</td><td>' + b.target + '</td><td>' + b.contactType + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  h += '<div class="note-callout" style="margin-top:16px"><strong>Key Finding:</strong> ' + mb.keyFinding + '</div>';
+  h += '</div>';
+}
 
-  <!-- OPTIMIZATION -->
-  <div class="section">
-    <div class="section-title">What We Are Working On to Improve Performance</div>
-    <div class="opt-grid">
-      <div class="opt-card">
-        <div class="opt-num">Action 01</div>
-        <h4>Subject Line & Opening Hook Testing</h4>
-        <div class="opt-row"><span>Trigger:</span> 0 replies across all sequences after initial delivery cycle</div>
-        <div class="opt-row"><span>Action:</span> A/B test subject lines and opening sentences on Step 1 of both agent sequences</div>
-        <div class="opt-row"><span>Expected Outcome:</span> First reply signal within 2-week cycle; baseline reply rate established</div>
-      </div>
-      <div class="opt-card">
-        <div class="opt-num">Action 02</div>
-        <h4>Buyers Sequence List Hygiene</h4>
-        <div class="opt-row"><span>Trigger:</span> 14 bounces (2.1%) in the Buyers Sequence — highest bounce rate of the three</div>
-        <div class="opt-row"><span>Action:</span> Audit source list; remove invalid emails before adding new contacts</div>
-        <div class="opt-row"><span>Expected Outcome:</span> Bounce rate below 1.5% next cycle; sender domain reputation protected</div>
-      </div>
-      <div class="opt-card">
-        <div class="opt-num">Action 03</div>
-        <h4>Completed Contact Re-Engagement</h4>
-        <div class="opt-row"><span>Trigger:</span> 107 contacts completed the full sequence with no reply</div>
-        <div class="opt-row"><span>Action:</span> Design a 1–2 step re-engagement sequence with a softer CTA (e.g., "still the right time?")</div>
-        <div class="opt-row"><span>Expected Outcome:</span> Surface latent interest from warm contacts without new list spend</div>
-      </div>
-      <div class="opt-card">
-        <div class="opt-num">Action 04</div>
-        <h4>Agent Sequence Deduplication</h4>
-        <div class="opt-row"><span>Trigger:</span> Two parallel agent sequences targeting the same market segment</div>
-        <div class="opt-row"><span>Action:</span> Cross-reference contact lists between both agent sequences; suppress duplicates</div>
-        <div class="opt-row"><span>Expected Outcome:</span> Cleaner segmentation; reduced unsubscribe risk from over-messaging</div>
-      </div>
-      <div class="opt-card">
-        <div class="opt-num">Action 05</div>
-        <h4>SMS CTA Optimization — Buyers Sequence</h4>
-        <div class="opt-row"><span>Trigger:</span> SMS channel active but no replies in baseline period</div>
-        <div class="opt-row"><span>Action:</span> Review SMS copy and CTA; ensure ask is simple and mobile-native (e.g., "Reply YES to get started")</div>
-        <div class="opt-row"><span>Expected Outcome:</span> First SMS reply signal by next cycle; SMS outperforms email on reply rate</div>
-      </div>
-    </div>
-  </div>
+document.getElementById('mainContent').innerHTML = h;
+}).catch(function(e){
+  document.getElementById('mainContent').innerHTML = '<div class="error">Could not load report data: ' + e.message + '</div>';
+});
 
-  <!-- CHANGE SUMMARY -->
-  <div class="section">
-    <div class="section-title">What Changed Since the Last Update</div>
-    <div class="change-box">
-      <p>This is <strong>Report #001 — the Benchmark Report</strong> for AAA Pro Home Inspectors. There is no prior period to compare against. All metrics captured here represent the starting baseline. Period-over-period comparisons, trend lines, and delta indicators will begin in <strong>Report #002</strong>, scheduled for <strong>May 6, 2026</strong>. At that point, all current metrics — contacts, executions, completions, bounces, replies, and bookings — will serve as the reference point for measuring growth and performance change.</p>
-    </div>
-  </div>
-
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-  <p>Generated by MercenaryMarketing.ai &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; AAA Pro Home Inspectors &nbsp;·&nbsp; Report #001 &nbsp;·&nbsp; April 22, 2026</p>
-</div>
-
+function kc(label, value, sub, warn) {
+  return '<div class="kpi-card"><div class="kpi-label">' + label + '</div><div class="kpi-value' + (warn ? ' m-warn' : '') + '">' + value + '</div><div class="kpi-sub">' + sub + '</div></div>';
+}
+function cc(label, curr, base, delta, neg) {
+  var dc = neg || (typeof delta === 'string' && delta.indexOf('-') === 0) ? 'kpi-d-neg' : 'kpi-d-pos';
+  return '<div class="kpi-card"><div class="kpi-label">' + label + '</div><div class="kpi-value" style="font-size:1.4rem">' + curr + '</div><div class="kpi-sub">Baseline: ' + base + '</div><div class="kpi-delta ' + dc + '">d ' + delta + '</div></div>';
+}
+</script>
 </body>
 </html>
